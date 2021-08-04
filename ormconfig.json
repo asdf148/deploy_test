@@ -1,0 +1,12 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "NestJS",
+    "password": "NestJS",
+    "database": "NestJS_Test",
+    "entities": ["dist/entity/*.entity{.ts,.js}"],
+    "synchronize": true,
+    "dropSchema": true,
+    "timezone": "+09:00"
+  }
