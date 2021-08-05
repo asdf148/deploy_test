@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column} from "typeorm";
-import { Post } from "./post.entity";
+import { Writing } from "./writing.entity";
 import { User } from "./user.entity";
 
 @Entity()
@@ -12,23 +12,17 @@ export class Application{
 
     @ManyToOne(
         () => User,
-        (user) => user.id
+        (user) => user.applications
     )
-    @JoinColumn({
-        name: 'user_id'
-    })
     @ApiProperty({ description: '유저 아이디'})
-    userId: User;
+    user: User;
     
     @ManyToOne(
-        () => Post,
-        (post) => post.id
+        () => Writing,
+        (writing) => writing.applications
     )
-    @JoinColumn({
-        name: 'post_id'
-    })
     @ApiProperty({ description: '모집글 아이디'})
-    postId: Post;
+    writing: Writing;
 
     @Column()
     @ApiProperty({ description: '이름'})

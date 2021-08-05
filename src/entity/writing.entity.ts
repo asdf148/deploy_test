@@ -5,7 +5,7 @@ import { Heart } from "./heart.entity";
 import { User } from "./user.entity";
 
 @Entity()
-export class Post{
+export class Writing{
 
     @PrimaryGeneratedColumn()
     @ApiProperty({ description: '아이디'})
@@ -39,12 +39,9 @@ export class Post{
 
     @ManyToOne(
         () => User,
-        (user) => user.id
+        (user) => user.writings
     )
-    @JoinColumn({
-        name: 'user_id'
-    })
-    userId: User;
+    user: User;
 
     @Column()
     @ApiProperty({ description: '마감 일자'})
@@ -60,13 +57,13 @@ export class Post{
 
     @OneToMany(
         () => Heart,
-        (heart)=>heart.userId
+        (heart)=>heart.writing
     )
-    heart: Heart[];
+    hearts: Heart[];
 
     @OneToMany(
         () => Application,
-        (application)=>application.userId
+        (application)=>application.writing
     )
-    application: Heart[];
+    applications: Application[];
 } 

@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 import { Application } from "./application.entity";
 import { Heart } from "./heart.entity";
-import { Post } from "./post.entity";
+import {  Writing } from "./writing.entity";
 
 @Entity()
 export class User{
@@ -30,20 +30,20 @@ export class User{
     imagePath: string;
 
     @OneToMany(
-        () => Post,
-        (post)=>post.userId
+        () => Writing,
+        (writing)=>writing.user
     )
-    post: Post[];
+    writings: Writing[];
 
     @OneToMany(
         () => Heart,
-        (heart)=>heart.userId
+        (heart)=>heart.user
     )
-    heart: Heart[];
+    hearts: Heart[];
 
     @OneToMany(
         () => Application,
-        (application)=>application.userId
+        (application)=>application.user
     )
-    application: Heart[];
+    applications: Heart[];
 }
