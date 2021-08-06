@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany} from "typeorm";
 import { Application } from "./application.entity";
+import { Comment } from "./comment.entity";
 import { Heart } from "./heart.entity";
 import { User } from "./user.entity";
 
@@ -37,12 +38,6 @@ export class Writing{
     @ApiProperty({ description: '수정 일자'})
     updatedAt: Date;
 
-    @ManyToOne(
-        () => User,
-        (user) => user.writings
-    )
-    user: User;
-
     @Column()
     @ApiProperty({ description: '마감 일자'})
     period: Date;
@@ -56,6 +51,12 @@ export class Writing{
     category: string;
 
     @OneToMany(
+        () => Comment,
+        (comment)=>comment.writing
+    )
+    comments: Comment[];
+
+    @OneToMany(
         () => Heart,
         (heart)=>heart.writing
     )
@@ -66,4 +67,10 @@ export class Writing{
         (application)=>application.writing
     )
     applications: Application[];
+
+    @ManyToOne(
+        () => User,
+        (user) => user.writings
+    )
+    user: User;
 } 

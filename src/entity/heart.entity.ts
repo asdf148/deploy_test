@@ -19,8 +19,7 @@ export class Heart{
     
     @ManyToOne(
         () => Writing,
-        (post) => post.hearts
+        (writing) => writing.hearts
     )
-    @ApiProperty({ description: '모집글 아이디'})
     writing: Writing;
 } 

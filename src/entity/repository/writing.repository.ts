@@ -1,12 +1,14 @@
+import { Injectable } from "@nestjs/common";
 import {EntityRepository, Repository} from "typeorm";
 import { Writing } from "../writing.entity";
 
+@Injectable()
 @EntityRepository(Writing)
 export class WritingRepository extends Repository<Writing> {
 
     findByTitle(title:string) {
-        return this.createQueryBuilder("post")
-            .where("post.title = :title", { title })
+        return this.createQueryBuilder("writing")
+            .where("writing.title = :title", { title })
             .getMany();
     }
 }

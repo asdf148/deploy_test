@@ -12,9 +12,20 @@ import { ApplicationModule } from './application/application.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
-    TypeOrmModule.forFeature([User, Writing]),
     ConfigModule.forRoot({isGlobal: true}),
+    TypeOrmModule.forRoot({
+      "type": "mysql",
+      "host": process.env.DB_HOST,
+      "port": 3306,
+      "username": process.env.DB_USER,
+      "password": process.env.DB_PWD,
+      "database": process.env.DB_NM,
+      "entities": ["dist/entity/*.entity{.ts,.js}"],
+      "synchronize": true,
+      "dropSchema": true,
+      "timezone": "+09:00"
+    }),
+    TypeOrmModule.forFeature([User, Writing]),
     AuthModule,
     PostModule,
     HeartModule,

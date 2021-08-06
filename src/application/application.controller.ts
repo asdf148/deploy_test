@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Application } from 'src/entity/application.entity';
 import { CreateApplication } from 'src/entity/application_dto/createApplication.dto';
@@ -7,6 +7,7 @@ import { DeleteResult } from 'typeorm';
 import { ApplicationService } from './application.service';
 
 @Controller('application')
+@ApiTags('Application')
 export class ApplicationController {
     constructor(private readonly applicationService:ApplicationService) {}
 

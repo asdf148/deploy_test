@@ -1,6 +1,6 @@
 import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Writing } from 'src/entity/writing.entity';
 import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
@@ -10,6 +10,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { PostService } from './post.service';
 
 @Controller('post')
+@ApiTags('Post')
 export class PostController {
     constructor(private readonly postService:PostService) {}
 

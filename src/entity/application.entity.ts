@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, ManyToOne, Column} from "typeorm";
 import { Writing } from "./writing.entity";
 import { User } from "./user.entity";
 
@@ -9,20 +9,6 @@ export class Application{
     @PrimaryGeneratedColumn()
     @ApiProperty({ description: '아이디'})
     id: number;
-
-    @ManyToOne(
-        () => User,
-        (user) => user.applications
-    )
-    @ApiProperty({ description: '유저 아이디'})
-    user: User;
-    
-    @ManyToOne(
-        () => Writing,
-        (writing) => writing.applications
-    )
-    @ApiProperty({ description: '모집글 아이디'})
-    writing: Writing;
 
     @Column()
     @ApiProperty({ description: '이름'})
@@ -41,4 +27,16 @@ export class Application{
     })
     @ApiProperty({ description: '수락 여부'})
     accep_status: string;
+
+    @ManyToOne(
+        () => User,
+        (user) => user.applications
+    )
+    user: User;
+    
+    @ManyToOne(
+        () => Writing,
+        (writing) => writing.applications
+    )
+    writing: Writing;
 } 

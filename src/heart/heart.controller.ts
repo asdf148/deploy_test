@@ -1,8 +1,9 @@
 import { Controller, Delete, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HeartService } from './heart.service';
 
 @Controller('heart')
+@ApiTags('Heart')
 export class HeartController {
     constructor(private readonly heartService:HeartService) {}
 
