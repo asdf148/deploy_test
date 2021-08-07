@@ -18,7 +18,9 @@ export class PostController {
     @ApiOperation({summary:'게시물 한 개 가져오기', description:'게시물 한 개 가져오기'})
     @ApiFoundResponse({description:'게시물 한 개 가져오기', type:Writing })
     async detail(@Param('id') id:string, @Res() res:Response){
+        const writing:Writing = await this.postService.findOne(id);
 
+        return res.status(HttpStatus.OK).json({writing:writing});
     }
 
     @Get('/')
@@ -35,12 +37,12 @@ export class PostController {
     @ApiOperation({summary:'게시물 작성', description:'글 생성'})
     @ApiOkResponse({description:'글 생성', type:Writing })
     async write(@UploadedFile() file:Express.Multer.File, @Body() createWriting:CreateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        let writing:Writing = await this.postService.create(file, createWriting);
+        const writing:Writing = await this.postService.create(file, createWriting);
 
         return res.status(HttpStatus.CREATED).json({writing:writing});
     }
 
-    @Put('/update/:id')
+    @Put('/:id')
     @ApiOperation({summary:'게시물 수정', description:'글 수정'})
     @ApiOkResponse({description:'글 수정', type:UpdateResult })
     async update(@Param('id') id:string, @Body() updateWriting:UpdateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
@@ -49,10 +51,12 @@ export class PostController {
         return res.status(HttpStatus.OK).json({result:result});
     }
     
-    @Delete('/delete/:id')
+    @Delete('/:id')
     @ApiOperation({summary:'게시물 삭제', description:'글 삭제'})
     @ApiOkResponse({description:'글 삭제', type:DeleteResult })
     async delete(@Param('id') id:string, @Res() res:Response){
+        const result:DeleteResult = await this.postService.delete(id);
 
+        return res.status(HttpStatus.OK).json({result:result});
     }
 }

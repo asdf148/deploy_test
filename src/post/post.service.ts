@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Writing } from 'src/entity/writing.entity';
 import { WritingRepository } from 'src/entity/repository/writing.repository';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UpdateWriting } from 'src/entity/writing_dto/updateWriting.dto';
 import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
 
 @Injectable()
 export class PostService {
     constructor(@InjectRepository(WritingRepository) private writingRepository: Repository<Writing>, ) {}
+
+    async findOne(id:string):Promise<Writing>{
+        return this.writingRepository.findOne(id);
+    }
 
     async findAll():Promise<Writing[]>{
         return this.writingRepository.find();
@@ -46,5 +50,9 @@ export class PostService {
         }
 
         return this.writingRepository.update(id, foundWritng);
+    }
+
+    async delete(id:string):Promise<DeleteResult>{
+        return this.writingRepository.delete(id);
     }
 }
