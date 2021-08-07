@@ -55,6 +55,6 @@ export class AuthService {
         }
         
         //만료시간 설정하는 법 알아오기
-        return jwt.sign({user_id:user.id, user_email:user.email, iss:'admin', exp : 314}, process.env.secretKey);
+        return jwt.sign({user_id:user.id, user_email:user.email}, process.env.secretKey, {expiresIn: '10m', issuer: 'Server'})
     }
 }
