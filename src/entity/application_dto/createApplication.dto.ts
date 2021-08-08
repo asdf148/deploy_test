@@ -1,10 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateApplication{
-
-    @ApiProperty({ description: '아이디'})
-    id: number;
-
     @ApiProperty({ description: '이름'})
     name: string;
 
