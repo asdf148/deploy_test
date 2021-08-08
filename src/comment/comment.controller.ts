@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Headers, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Comment } from 'src/entity/comment.entity';
 import { CreateComment } from 'src/entity/comment_dto/createComment.dto';
@@ -8,6 +8,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { CommentService } from './comment.service';
 
 @Controller('comment')
+@ApiTags('Comment')
 export class CommentController {
     constructor(private readonly commentService:CommentService) {}
 
