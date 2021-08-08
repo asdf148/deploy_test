@@ -41,15 +41,7 @@ export class ApplicationService {
         return this.applicationRepository.find({where:{writingId:post_id}});
     }
 
-    async statusYes(id:string, status:string):Promise<UpdateResult>{
-        const application:Application = await this.applicationRepository.findOne(id);
-
-        application.accep_status = status;
-
-        return this.applicationRepository.update(id, application);
-    }
-
-    async statusNo(id:string, status:string):Promise<UpdateResult>{
+    async statusChange(id:string, status:string):Promise<UpdateResult>{
         const application:Application = await this.applicationRepository.findOne(id);
 
         application.accep_status = status;

@@ -37,7 +37,7 @@ export class ApplicationController {
     @ApiOperation({summary:'스터디 신청 수락', description:'신청서 상태 수락으로 변경'})
     @ApiOkResponse({description:'신청서 상태 수락으로 변경', type:String })
     async accept(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        const result:UpdateResult = await this.applicationService.statusYes(id, "yes");
+        const result:UpdateResult = await this.applicationService.statusChange(id, "yes");
 
         return res.status(HttpStatus.OK).json({result:result});
     }
@@ -46,7 +46,7 @@ export class ApplicationController {
     @ApiOperation({summary:'스터디 신청 거절', description:'신청서 상태 거절로 변경'})
     @ApiOkResponse({description:'신청서 상태 거절로 변경', type:String })
     async refusal(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        const result:UpdateResult = await this.applicationService.statusNo(id, "No");
+        const result:UpdateResult = await this.applicationService.statusChange(id, "No");
 
         return res.status(HttpStatus.OK).json({result:result});
     }
