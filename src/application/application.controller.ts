@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpStatus, Param, Patch, Post, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Application } from 'src/entity/application.entity';
@@ -10,24 +10,6 @@ import { ApplicationService } from './application.service';
 @ApiTags('Application')
 export class ApplicationController {
     constructor(private readonly applicationService:ApplicationService) {}
-
-    @Get('/yes/:id')
-    @ApiOperation({summary:'스터디 신청 수락', description:'신청서 상태 수락으로 변경'})
-    @ApiOkResponse({description:'신청서 상태 수락으로 변경', type:String })
-    async accept(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        const result:UpdateResult = await this.applicationService.statusYes(id, "yes");
-
-        return res.status(HttpStatus.OK).json({result:result});
-    }
-
-    @Get('/no/:id')
-    @ApiOperation({summary:'스터디 신청 거절', description:'신청서 상태 거절로 변경'})
-    @ApiOkResponse({description:'신청서 상태 거절로 변경', type:String })
-    async refusal(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        const result:UpdateResult = await this.applicationService.statusNo(id, "No");
-
-        return res.status(HttpStatus.OK).json({result:result});
-    }
 
     @Get('/:id')
     @ApiOperation({summary:'스터디 신청 목록 보기', description:'신청서 찾기'})
@@ -49,6 +31,24 @@ export class ApplicationController {
         }
 
         return res.status(HttpStatus.OK).json({application:application});
+    }
+
+    @Patch('/yes/:id')
+    @ApiOperation({summary:'스터디 신청 수락', description:'신청서 상태 수락으로 변경'})
+    @ApiOkResponse({description:'신청서 상태 수락으로 변경', type:String })
+    async accept(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+        const result:UpdateResult = await this.applicationService.statusYes(id, "yes");
+
+        return res.status(HttpStatus.OK).json({result:result});
+    }
+
+    @Patch('/no/:id')
+    @ApiOperation({summary:'스터디 신청 거절', description:'신청서 상태 거절로 변경'})
+    @ApiOkResponse({description:'신청서 상태 거절로 변경', type:String })
+    async refusal(@Param('id') id:string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+        const result:UpdateResult = await this.applicationService.statusNo(id, "No");
+
+        return res.status(HttpStatus.OK).json({result:result});
     }
 
     @Delete('/:id')
