@@ -28,7 +28,7 @@ export class CommentController {
         const comment:Comment|string = await this.commentService.create(token, post_id, createComment);
 
         if(typeof comment == "string"){
-            return res.status(HttpStatus.OK).json({error:comment});
+            return res.status(HttpStatus.BAD_REQUEST).json({error:comment});
         }
 
         return res.status(HttpStatus.OK).json({comment:comment});

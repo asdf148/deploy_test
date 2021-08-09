@@ -27,7 +27,7 @@ export class ApplicationController {
         const application:Application|string = await this.applicationService.create(token, post_id, createApplication);
 
         if(typeof application == "string"){
-            return res.status(HttpStatus.OK).json({error:application});
+            return res.status(HttpStatus.BAD_REQUEST).json({error:application});
         }
 
         return res.status(HttpStatus.OK).json({application:application});

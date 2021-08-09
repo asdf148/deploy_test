@@ -1,8 +1,6 @@
 import { Controller, Delete, Get, Headers, HttpStatus, Param, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { JwtPayload, verify } from 'jsonwebtoken';
-import { Heart } from 'src/entity/heart.entity';
 import { HeartService } from './heart.service';
 
 @Controller('heart')
