@@ -1,4 +1,4 @@
-import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -36,8 +36,12 @@ export class PostController {
     @UseInterceptors(FileInterceptor('file',multerOptions))
     @ApiOperation({summary:'게시물 작성', description:'글 생성'})
     @ApiOkResponse({description:'글 생성', type:Writing })
-    async write(@UploadedFile() file:Express.Multer.File, @Body() createWriting:CreateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        const writing:Writing = await this.postService.create(file, createWriting);
+    async write(@Headers('Authorization') token:string, @UploadedFile() file:Express.Multer.File, @Body() createWriting:CreateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+        const writing:Writing|string = await this.postService.create(token, file, createWriting);
+
+        if(typeof writing == "string"){
+            return res.status(HttpStatus.BAD_REQUEST).json({error:writing});
+        }
 
         return res.status(HttpStatus.CREATED).json({writing:writing});
     }

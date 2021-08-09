@@ -5,10 +5,16 @@ import { WritingRepository } from 'src/entity/repository/writing.repository';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UpdateWriting } from 'src/entity/writing_dto/updateWriting.dto';
 import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
+import { verify } from 'jsonwebtoken';
+import { User } from 'src/entity/user.entity';
+import { UserRepository } from 'src/entity/repository/user.repository';
 
 @Injectable()
 export class PostService {
-    constructor(@InjectRepository(WritingRepository) private writingRepository: Repository<Writing>, ) {}
+    constructor(
+        @InjectRepository(WritingRepository) private writingRepository: Repository<Writing>,
+        @InjectRepository(UserRepository) private userRepository: Repository<User>,
+    ) {}
 
     async findOne(id:string):Promise<Writing>{
         return this.writingRepository.findOne(id);
@@ -18,14 +24,21 @@ export class PostService {
         return this.writingRepository.find();
     }
 
-    async create(file:Express.Multer.File, createWriting:CreateWriting):Promise<Writing>{
+    async create(token:string, file:Express.Multer.File, createWriting:CreateWriting):Promise<Writing|string>{
         let writing:Writing = new Writing();
+        const user:any = verify(token.substring(7,),process.env.secretKey);
+
+
+        if(typeof user == "string"){
+            return "token error";
+        }
 
         writing.title = createWriting.title;
         writing.content = createWriting.content;
         writing.personnel = createWriting.personnel;
         writing.period = createWriting.period;
         writing.category = createWriting.category;
+        writing.user = await this.userRepository.findOne(user.user_id);
 
         return this.writingRepository.create(writing);
     }
