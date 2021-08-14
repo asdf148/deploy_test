@@ -10,7 +10,10 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Project API')
     .setDescription('New Project API List')
-    .setVersion('0.1')
+    .setVersion('0.0.1')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'Token' },
+    'access-token',)
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

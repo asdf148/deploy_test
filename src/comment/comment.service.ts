@@ -23,7 +23,7 @@ export class CommentService {
 
     async create(token:string, post_id:string, createComment:CreateComment):Promise<Comment|string>{
         const comment = new Comment();
-        const user:any = verify(token.substring(7,),process.env.secretKey);
+        const user:any = verify(String(token).substring(7,),process.env.secretKey);
 
         if(typeof user == "string"){
             return "Token error";

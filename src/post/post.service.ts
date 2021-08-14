@@ -26,7 +26,7 @@ export class PostService {
 
     async create(token:string, file:Express.Multer.File, createWriting:CreateWriting):Promise<Writing|string>{
         let writing:Writing = new Writing();
-        const user:any = verify(token.substring(7,),process.env.secretKey);
+        const user:any = verify(String(token).substring(7,),process.env.secretKey);
 
 
         if(typeof user == "string"){
@@ -40,7 +40,7 @@ export class PostService {
         writing.category = createWriting.category;
         writing.user = await this.userRepository.findOne(user.user_id);
 
-        return this.writingRepository.create(writing);
+        return this.writingRepository.save(writing);
     }
 
     async update(id:string, updateWriting:UpdateWriting):Promise<UpdateResult>{

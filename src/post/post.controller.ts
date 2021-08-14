@@ -1,11 +1,11 @@
 import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Writing } from 'src/entity/writing.entity';
 import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
 import { UpdateWriting } from 'src/entity/writing_dto/updateWriting.dto';
-import { multerOptions } from 'src/multerOptions';
+import { multerBGOptions } from 'src/multerOptions';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { PostService } from './post.service';
 
@@ -33,10 +33,12 @@ export class PostController {
     }
 
     @Post('/write')
-    @UseInterceptors(FileInterceptor('file',multerOptions))
+    // Swagger에 file, header 추가하는 방법도 찾아 봐야 함
+    @ApiConsumes('multipart/form-data')
+    @UseInterceptors(FileInterceptor('file',multerBGOptions))
     @ApiOperation({summary:'게시물 작성', description:'글 생성'})
     @ApiOkResponse({description:'글 생성', type:Writing })
-    async write(@Headers('Authorization') token:string, @UploadedFile() file:Express.Multer.File, @Body() createWriting:CreateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+    async write(@Headers('authorization') token:string, @UploadedFile() file:Express.Multer.File, @Body() createWriting:CreateWriting, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
         const writing:Writing|string = await this.postService.create(token, file, createWriting);
 
         if(typeof writing == "string"){

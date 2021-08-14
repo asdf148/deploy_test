@@ -18,7 +18,7 @@ export class HeartService {
     ) {}
 
     async create(token:string, writing_id:string):Promise<string>{
-        const user:any = verify(token.substring(7,),process.env.secretKey);
+        const user:any = verify(String(token).substring(7,),process.env.secretKey);
 
         const heart = new Heart();
 

@@ -30,8 +30,8 @@ export class AuthService {
         return this.userRepository.findOne({
             join: {
                 alias: 'user',
-                leftJoin:{
-                    post: 'user.posts'
+                leftJoinAndSelect:{
+                    writing: 'user.writings'
                 }
             },
             where: { id : id }
