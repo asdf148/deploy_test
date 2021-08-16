@@ -50,6 +50,12 @@ export class Writing{
     @ApiProperty({ description: '카테고리'})
     category: string;
 
+    @Column({
+        nullable:false
+    })
+    @ApiProperty({description:'유저 외래키'})
+    userId:number;
+
     @OneToMany(
         () => Comment,
         (comment)=>comment.writing

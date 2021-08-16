@@ -5,5 +5,4 @@ import { Application } from "../application.entity";
 @Injectable()
 @EntityRepository(Application)
 export class ApplicationRepository extends Repository<Application> {
-
 }

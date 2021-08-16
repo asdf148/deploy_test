@@ -22,6 +22,18 @@ export class Comment{
     @ApiProperty({ description: '수정 일자'})
     updatedAt: Date;
 
+    @Column({
+        nullable:false
+    })
+    @ApiProperty({description:'유저 외래키'})
+    userId:number;
+
+    @Column({
+        nullable:false
+    })
+    @ApiProperty({description:'게시물 외래키'})
+    writingId:number;
+
     @ManyToOne(
         () => User,
         (user) => user.comments

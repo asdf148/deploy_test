@@ -37,6 +37,7 @@ export class ApplicationService {
         return this.applicationRepository.delete(id);
     }
 
+    //에러 writingId
     async findAll(post_id:string):Promise<Application[]>{
         return this.applicationRepository.find({where:{writingId:post_id}});
     }

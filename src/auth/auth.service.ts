@@ -31,7 +31,9 @@ export class AuthService {
             join: {
                 alias: 'user',
                 leftJoinAndSelect:{
-                    writing: 'user.writings'
+                    writing: 'user.writings',
+                    application:'user.applications',
+                    heart:'user.hearts'
                 }
             },
             where: { id : id }
@@ -54,7 +56,7 @@ export class AuthService {
             return "Email or password is different.";
         }
         
-        //만료시간 설정하는 법 알아오기
-        return jwt.sign({user_id:user.id, user_email:user.email}, process.env.secretKey, {expiresIn: '10m', issuer: 'Server'})
+        //expiresIn: '10m'
+        return jwt.sign({user_id:user.id, user_email:user.email}, process.env.secretKey, { issuer: 'Server'})
     }
 }
