@@ -25,7 +25,6 @@ import { join } from 'path';
       "database": process.env.DB_NM,
       "entities": ["dist/entity/*.entity{.ts,.js}"],
       "synchronize": true,
-      "dropSchema": true,
       "timezone": "+09:00"
     }),
     TypeOrmModule.forFeature([User, Writing]),

@@ -17,4 +17,19 @@ export class WritingRepository extends Repository<Writing> {
             .select(["title", "personnel", "period", "category"])
             .getMany();
     }
+
+    findWithCategory(category:string){
+        return this.createQueryBuilder("writing")
+            .select(["title", "personnel", "period", "category"])
+            .where("writing.category = :category", {category})
+            .getMany();
+    }
+
+    // findByTitleAndContent(searchTerm:string){
+    //     return this.createQueryBuilder("writing")
+    //     .select(["title", "personnel", "period", "category"])
+    //     .where("wiritng.title = %:")
+    //     .orWhere("")
+    //     .orWhere()
+    // }
 }

@@ -14,12 +14,12 @@ import { PostService } from './post.service';
 export class PostController {
     constructor(private readonly postService:PostService) {}
 
-    @Get('/search')
-    @ApiOperation({summary:'검색', description:'검색'})
-    @ApiFoundResponse({description:'검색', type:Array})
-    async search(@Query("category") category: string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-        return res.status(HttpStatus.OK).json({post:await this.postService.search(category)})
-    }
+    // @Get('/search')
+    // @ApiOperation({summary:'검색', description:'검색'})
+    // @ApiFoundResponse({description:'검색', type:Array})
+    // async search(@Query("category") category: string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+    //     return res.status(HttpStatus.OK).json({post:await this.postService.search(category)})
+    // }
     
     @Get('/:id')
     @ApiOperation({summary:'게시물 한 개 가져오기', description:'게시물 한 개 가져오기'})
