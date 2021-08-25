@@ -16,6 +16,10 @@ export class PostService {
         @InjectRepository(UserRepository) private userRepository: Repository<User>,
     ) {}
 
+    async search(category:string):Promise<Writing[]>{
+        return this.writingRepository.find({where:{category: category}});
+    }
+
     async findOne(id:string):Promise<Writing>{
         return this.writingRepository.findOne(id);
     }

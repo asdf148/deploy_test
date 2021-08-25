@@ -1,4 +1,4 @@
-import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers } from '@nestjs/common';
+import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -14,13 +14,20 @@ import { PostService } from './post.service';
 export class PostController {
     constructor(private readonly postService:PostService) {}
 
+    @Get('/search')
+    @ApiOperation({summary:'검색', description:'검색'})
+    @ApiFoundResponse({description:'검색', type:Array})
+    async search(@Query("category") category: string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
+        return res.status(HttpStatus.OK).json({post:await this.postService.search(category)})
+    }
+    
     @Get('/:id')
     @ApiOperation({summary:'게시물 한 개 가져오기', description:'게시물 한 개 가져오기'})
     @ApiFoundResponse({description:'게시물 한 개 가져오기', type:Writing })
     async detail(@Param('id') id:string, @Res() res:Response){
         const writing:Writing = await this.postService.findOne(id);
 
-        return res.status(HttpStatus.OK).json({writing:writing});
+        return res.status(HttpStatus.OK).json({post:writing});
     }
 
     @Get('/')
