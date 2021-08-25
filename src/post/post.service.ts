@@ -12,7 +12,7 @@ import { UserRepository } from 'src/entity/repository/user.repository';
 @Injectable()
 export class PostService {
     constructor(
-        @InjectRepository(WritingRepository) private writingRepository: Repository<Writing>,
+        @InjectRepository(WritingRepository) private writingRepository: WritingRepository,
         @InjectRepository(UserRepository) private userRepository: Repository<User>,
     ) {}
 
@@ -21,12 +21,12 @@ export class PostService {
     }
 
     async findAll():Promise<Writing[]>{
-        return this.writingRepository.find();
+        return this.writingRepository.findPosts();
     }
 
     async create(token:string, file:Express.Multer.File, createWriting:CreateWriting):Promise<Writing|string>{
         let writing:Writing = new Writing();
-        const user:any = verify(String(token).substring(7,),process.env.secretKey);
+        const user:any = verify(String(token).substring(7),process.env.secretKey);
 
 
         if(typeof user == "string"){

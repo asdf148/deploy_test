@@ -12,12 +12,13 @@ import * as jwt from 'jsonwebtoken';
 export class AuthService {
     constructor(@InjectRepository(UserRepository) private userRepository: Repository<User>, ) {}
 
-    async create(createUser: CreateUser): Promise<User>{
+    async create(createUser: CreateUser, file:Express.Multer.File): Promise<User>{
         let user: User = new User();
 
         user.nick = createUser.nick;
         user.email = createUser.email;
         user.password = await bcrypt.hash(createUser.password, 12);
+        user.imagePath = file.filename;
 
         return this.userRepository.save(user);
     }

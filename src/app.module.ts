@@ -10,6 +10,8 @@ import { PostModule } from './post/post.module';
 import { HeartModule } from './heart/heart.module';
 import { ApplicationModule } from './application/application.module';
 import { CommentModule } from './comment/comment.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -31,7 +33,10 @@ import { CommentModule } from './comment/comment.module';
     PostModule,
     HeartModule,
     ApplicationModule,
-    CommentModule
+    CommentModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "public")
+    })
   ],
   controllers: [AppController],
   providers: [AppService,],

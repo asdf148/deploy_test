@@ -1,9 +1,11 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
-import { ApiCreatedResponse, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiConsumes, ApiCreatedResponse, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { User } from 'src/entity/user.entity';
 import { CreateUser } from 'src/entity/user_dto/createUser.dto';
 import { LoginUser } from 'src/entity/user_dto/loginUser.dto';
+import { multerPFOptions } from 'src/multerOptions';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -12,10 +14,12 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('/join')
+    @ApiConsumes('multipart/form-data')
+    @UseInterceptors(FileInterceptor('file',multerPFOptions))
     @ApiOperation({summary: '회원가입', description: '유저 생성'})
     @ApiCreatedResponse({description: '유저 생성', type: User})
-    async join(@Body() createUser:CreateUser, @Res() res:Response){
-        let user:User = await this.authService.create(createUser);
+    async join(@Body() createUser:CreateUser, @UploadedFile() file:Express.Multer.File, @Res() res:Response){
+        let user:User = await this.authService.create(createUser, file);
 
         return res.status(HttpStatus.CREATED).json({user:user});
     }

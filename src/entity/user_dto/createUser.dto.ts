@@ -1,6 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUser{
+    @ApiProperty({description: '프로필 이미지(보이기만)'})
+    file: Express.Multer.File
+
     @ApiProperty({description: '닉네임', example:'테스트'})
     nick: string;
 

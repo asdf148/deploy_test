@@ -11,4 +11,10 @@ export class WritingRepository extends Repository<Writing> {
             .where("writing.title = :title", { title })
             .getMany();
     }
+
+    findPosts(){
+        return this.createQueryBuilder("writing")
+            .select(["title", "personnel", "period", "categroy"])
+            .getMany();
+    }
 }

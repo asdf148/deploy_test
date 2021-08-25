@@ -15,7 +15,7 @@ export const multerBGOptions = {
 export const multerPFOptions = {
   storage: diskStorage({
     destination(req, file, cb){
-        cb(null, join(__dirname + '/public/background/'));
+        cb(null, join(__dirname + '/public/profile/'));
     },
     filename(req,file,cb){
         cb(null, `${Date.now()}__${file.originalname}`);
