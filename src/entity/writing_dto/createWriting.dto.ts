@@ -12,7 +12,7 @@ export class CreateWriting{
     personnel: number;
 
     @ApiProperty({ description: '마감 일자'})
-    period: Date;
+    period: string;
 
     @ApiProperty({ description: '카테고리'})
     category: string;
