@@ -34,7 +34,6 @@ export class PostService {
         let writing:Writing = new Writing();
         const user:any = verify(String(token).substring(7),process.env.secretKey);
 
-
         if(typeof user == "string"){
             return "token error";
         }

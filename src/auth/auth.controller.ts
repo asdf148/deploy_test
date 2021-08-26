@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiCreatedResponse, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -33,20 +33,28 @@ export class AuthController {
         return res.status(HttpStatus.OK).json({token:token});
     }
 
-    @Get('/user/:id')
+    @Get('/user')
     @ApiOperation({summary:'유저 찾기', description:'유저 찾기'})
     @ApiFoundResponse({description:'유저 찾기', type:User})
-    async findUser(@Param('id') id:string, @Res() res:Response){
-        let foundUser: User = await this.authService.findOne(id);
+    async findUser(@Headers('authorization') token:string, @Res() res:Response){
+        let foundUser: User|string = await this.authService.findOne(token);
+
+        if(typeof foundUser == "string"){
+            return res.status(HttpStatus.BAD_REQUEST).json({tokenError:foundUser});
+        }
 
         return res.status(HttpStatus.OK).json({foundUser:foundUser});
     }
 
-    @Get('/userAndrelation/:id')
+    @Get('/userAndrelation')
     @ApiOperation({summary:'마이 페이지', description:'유저, 게시물 찾기'})
     @ApiFoundResponse({description:'유저, 게시물 찾기', type:User})
-    async myPage(@Param('id') id:string, @Res() res:Response){
-        let foundUser: User = await this.authService.findOneAndRelation(id);
+    async myPage(@Headers('authorization') token:string, @Res() res:Response){
+        let foundUser: User|string = await this.authService.findOneAndRelation(token);
+
+        if(typeof foundUser == "string"){
+            return res.status(HttpStatus.BAD_REQUEST).json({tokenError:foundUser});
+        }
 
         return res.status(HttpStatus.OK).json({foundUser:foundUser});
     }

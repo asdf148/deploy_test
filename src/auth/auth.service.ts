@@ -23,11 +23,25 @@ export class AuthService {
         return this.userRepository.save(user);
     }
 
-    async findOne(id:string):Promise<User> {
-        return this.userRepository.findOne(id);
+    async findOne(token:string):Promise<User|string> {
+
+        const user:any = jwt.verify(String(token).substring(7),process.env.secretKey);
+
+        if(typeof user == "string"){
+            return "token error";
+        }
+
+        return this.userRepository.findOne(user.user_id);
     }
 
-    async findOneAndRelation(id:string):Promise<User>{
+    async findOneAndRelation(token:string):Promise<User|string>{
+
+        const user:any = jwt.verify(String(token).substring(7),process.env.secretKey);
+
+        if(typeof user == "string"){
+            return "token error";
+        }
+
         return this.userRepository.findOne({
             join: {
                 alias: 'user',
@@ -37,7 +51,7 @@ export class AuthService {
                     heart:'user.hearts'
                 }
             },
-            where: { id : id }
+            where: { id : user.user_id }
         })
     }
 
