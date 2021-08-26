@@ -14,7 +14,7 @@ export class WritingRepository extends Repository<Writing> {
 
     findPosts(){
         return this.createQueryBuilder("writing")
-            .select(["title", "personnel", "period", "category"])
+            .select(["writing.title", "writing.personnel", "writing.period", "writing.category"])
             .getMany();
     }
 
