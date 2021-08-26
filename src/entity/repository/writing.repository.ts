@@ -14,13 +14,13 @@ export class WritingRepository extends Repository<Writing> {
 
     findPosts(){
         return this.createQueryBuilder("writing")
-            .select(["writing.title", "writing.personnel", "writing.period", "writing.category"])
+            .select(["writing.id", "writing.title", "writing.personnel", "writing.period", "writing.category"])
             .getMany();
     }
 
     findWithCategory(category:string){
         return this.createQueryBuilder("writing")
-            .select(["writing.title", "writing.personnel", "writing.period", "writing.category"])
+            .select(["writing.id", "writing.title", "writing.personnel", "writing.period", "writing.category"])
             .where("writing.category = :category", {category})
             .getRawMany()
     }
