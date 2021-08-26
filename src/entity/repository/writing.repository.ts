@@ -20,7 +20,7 @@ export class WritingRepository extends Repository<Writing> {
 
     findWithCategory(category:string){
         return this.createQueryBuilder("writing")
-            .select(["title", "personnel", "period", "category"])
+            .select(["writing.title", "writing.personnel", "writing.period", "writing.category"])
             .where("writing.category = :category", {category})
             .getRawMany()
     }
