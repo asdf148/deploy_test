@@ -1,7 +1,8 @@
-import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers, Query } from '@nestjs/common';
+import { Controller, Get, Post, HttpStatus, Res, UseInterceptors, Body, UploadedFile, Put, Param, Delete, Headers, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Writing } from 'src/entity/writing.entity';
 import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
 import { UpdateWriting } from 'src/entity/writing_dto/updateWriting.dto';
@@ -14,11 +15,26 @@ import { PostService } from './post.service';
 export class PostController {
     constructor(private readonly postService:PostService) {}
 
-    // @Get('/search')
-    // @ApiOperation({summary:'검색', description:'검색'})
-    // @ApiFoundResponse({description:'검색', type:Array})
+    @Get('/')
+    @ApiOperation({summary:'메인 페이지', description:'메인페이지 page=(페이지 넘버)&limit=(게시물 수)'})
+    @ApiFoundResponse({description:'게시물 여러개 가져오기', type:Array })
+    async mainPage(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    ): Promise<Pagination<Writing>> {
+        limit = limit > 100 ? 100 : limit;
+        return this.postService.paginate({
+        page,
+        limit,
+        route: 'https://qovh.herokuapp.com/post/',
+        });
+    }
+
+    // @Get('/category')
+    // @ApiOperation({summary:'카테고리로 분류', description:'카테고리로 분류'})
+    // @ApiFoundResponse({description:'카테고리로 분류', type:Array})
     // async search(@Query("category") category: string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-    //     return res.status(HttpStatus.OK).json({post:await this.postService.search(category)})
+    //     return res.status(HttpStatus.OK).json({posts:await this.postService.findByCategory(category)})
     // }
     
     @Get('/:id')
@@ -30,14 +46,14 @@ export class PostController {
         return res.status(HttpStatus.OK).json({post:writing});
     }
 
-    @Get('/')
-    @ApiOperation({summary:'게시물 다 가져오기', description:'게시물 다 가져오기'})
-    @ApiFoundResponse({description:'게시물 다 가져오기', type:Array })
-    async findAll(@Res() res:Response):Promise<Response<any, Record<string, any>>> {
-        let posts:Writing[] = await this.postService.findAll()
+    // @Get('/')
+    // @ApiOperation({summary:'게시물 다 가져오기', description:'게시물 다 가져오기'})
+    // @ApiFoundResponse({description:'게시물 다 가져오기', type:Array })
+    // async findAll(@Res() res:Response):Promise<Response<any, Record<string, any>>> {
+    //     let posts:Writing[] = await this.postService.findAll()
 
-        return res.status(HttpStatus.OK).json({posts:posts})
-    }
+    //     return res.status(HttpStatus.OK).json({posts:posts})
+    // }
 
     @Post('/write')
     // Swagger에 file, header 추가하는 방법도 찾아 봐야 함

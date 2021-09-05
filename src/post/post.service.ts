@@ -8,6 +8,7 @@ import { CreateWriting } from 'src/entity/writing_dto/createWriting.dto';
 import { verify } from 'jsonwebtoken';
 import { User } from 'src/entity/user.entity';
 import { UserRepository } from 'src/entity/repository/user.repository';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class PostService {
@@ -20,7 +21,16 @@ export class PostService {
         
     // }
 
-    // async findByCategory
+    async paginate(option: IPaginationOptions): Promise<Pagination<Writing>>{
+        const queryBuilder = this.writingRepository.createQueryBuilder('w');
+        queryBuilder.orderBy('w.title', 'DESC'); // Or whatever you need to do
+
+        return paginate<Writing>(this.writingRepository, option)
+    }
+
+    async findByCategory(category:string):Promise<Writing[]>{
+        return this.writingRepository.findWithCategory(category);
+    }
 
     async findOne(id:string):Promise<Writing>{
         return this.writingRepository.findOne(id);

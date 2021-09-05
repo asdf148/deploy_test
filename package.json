@@ -36,6 +36,7 @@
     "faker": "^5.5.3",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "nestjs-typeorm-paginate": "^2.6.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.0",

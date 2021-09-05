@@ -22,7 +22,7 @@ export class WritingRepository extends Repository<Writing> {
         return this.createQueryBuilder("writing")
             .select(["writing.id", "writing.title", "writing.personnel", "writing.period", "writing.category"])
             .where("writing.category = :category", {category})
-            .getRawMany()
+            .getMany()
     }
 
     // findByTitleAndContent(searchTerm:string){
