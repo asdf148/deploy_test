@@ -30,12 +30,21 @@ export class PostController {
         });
     }
 
-    // @Get('/category')
-    // @ApiOperation({summary:'카테고리로 분류', description:'카테고리로 분류'})
-    // @ApiFoundResponse({description:'카테고리로 분류', type:Array})
-    // async search(@Query("category") category: string, @Res() res:Response):Promise<Response<any, Record<string, any>>>{
-    //     return res.status(HttpStatus.OK).json({posts:await this.postService.findByCategory(category)})
-    // }
+    @Get('/category')
+    @ApiOperation({summary:'카테고리로 분류', description:'카테고리로 분류(제대로 안돼는 듯)'})
+    @ApiFoundResponse({description:'카테고리로 분류', type:Array})
+    async search(
+        @Query("category") category: string,
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    ): Promise<Pagination<Writing>>{
+        limit = limit > 100 ? 100 : limit;
+        return this.postService.findByCategory(category, {
+        page,
+        limit,
+        route: 'https://qovh.herokuapp.com/post/',
+        });
+    }
     
     @Get('/:id')
     @ApiOperation({summary:'게시물 한 개 가져오기', description:'게시물 한 개 가져오기'})

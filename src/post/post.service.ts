@@ -28,8 +28,15 @@ export class PostService {
         return paginate<Writing>(this.writingRepository, option)
     }
 
-    async findByCategory(category:string):Promise<Writing[]>{
-        return this.writingRepository.findWithCategory(category);
+    async findByCategory(category:string, option: IPaginationOptions):Promise<Pagination<Writing>>{
+        // return this.writingRepository.findWithCategory(category);
+
+        const queryBuilder = this.writingRepository.createQueryBuilder("writing");
+        
+        queryBuilder.select(["writing.id", "writing.title", "writing.personnel", "writing.period", "writing.category"])
+        .where("writing.category = :category", {category})
+
+        return paginate<Writing>(this.writingRepository, option)
     }
 
     async findOne(id:string):Promise<Writing>{
